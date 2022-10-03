@@ -40,7 +40,10 @@ void termInterface_print(termInterface* this) {
         // line break
         if (i % this->width == 0) printf("\n");
         // set color
-        printf("\033[38;2;%d;%d;%dm", this->texture->buffer[i * 3], this->texture->buffer[i * 3 + 1], this->texture->buffer[i * 3 + 2]);
+        int x = i % this->texture->width,
+            y = i / this->texture->width;
+        color clr = texture_GetPixel(this->texture, x, y);
+        printf("\033[38;2;%d;%d;%dm", clr.red, clr.green, clr.blue);
         // print character
         printf("%c", this->buffer[i]);
     }
@@ -58,4 +61,5 @@ void termInterface_setChar(termInterface* this, int x, int y, char character, in
 void termInterface_setString(termInterface* this, int x, int y, char* string, int color) {
     for (int i = 0; string[i] != 0; i++) termInterface_setChar(this, x + i, y, string[i], color);
 }
+
 #endif
