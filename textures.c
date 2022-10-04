@@ -14,6 +14,14 @@ typedef struct {
     int red, green, blue, alpha;
 } color;
 
+int colorToInt(color clr, int colorLength) {
+    if (colorLength >= 1) return clr.alpha;
+    if (colorLength >= 2) return clr.alpha << 8 | clr.red;
+    if (colorLength >= 3) return clr.red << 16 | clr.green << 8 | clr.blue;
+    if (colorLength >= 4) return clr.alpha << 24 | clr.red << 16 | clr.green << 8 | clr.blue;
+    return 0;
+}
+
 texture* texture_new(int width, int height, int colorLength) {
     texture* this = malloc(sizeof(texture));
     this->width = width;
@@ -24,7 +32,6 @@ texture* texture_new(int width, int height, int colorLength) {
 }
 
 int texture_SetPixel(texture* this, int x, int y, int color) {
-    printf("x, y: %d, %d\n", x, y);
     if (x < 0 || x >= this->width || y < 0 || y >= this->height) return 1;
     int i = (y * this->width + x) * this->colorLength;
     // color 0xAA
