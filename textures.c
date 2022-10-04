@@ -14,6 +14,14 @@ typedef struct {
     int red, green, blue, alpha;
 } color;
 
+texture* texture_new(int width, int height, int colorLength) {
+    texture* this = malloc(sizeof(texture));
+    this->width = width;
+    this->height = height;
+    this->colorLength = colorLength;
+    this->buffer = malloc(width * height * colorLength * sizeof(int));
+    return this;
+}
 
 int texture_SetPixel(texture* this, int x, int y, int color) {
     printf("x, y: %d, %d\n", x, y);
@@ -76,9 +84,22 @@ color texture_GetPixel(texture* this, int x, int y) {
     return color;
 }
 
+void texture_free(texture* this) {
+    free(this->buffer);
+    free(this);
+}
+
 typedef struct {
     float x, y;
 } vector2;
+
+// return gradient texture
+
+
+
+float gradientXY(int x, int y, int w, int h) {
+
+}
 
 // perlin noise
 // from wikipedia https://en.wikipedia.org/wiki/Perlin_noise

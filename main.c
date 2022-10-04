@@ -20,20 +20,17 @@ int main() {
     rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
     termInterface* term = termInterface_new(columns, 10, 3);
-    printf("0\n");
-//    termInterface_clear(term);
-    printf("1\n");
-//    printf("\033[1;1H\033[2J");
-    printf("a\n");
+    termInterface_clear(term);
     for (int i = 0; i < term->width * term->height; i++) {
         term->buffer[i] = '#';
         int x = i % term->width,
             y = i / term->width;
-        texture_SetPixel(term->texture, x, y, 0x00FF00);
+        // gradient
+        int col = 0x000000 + (0xFFFFFF / (term->width * term->height)) * i;
+        texture_SetPixel(term->texture, x, y, col);
     }
-    printf("b\n");
+    printf("\033[1;1H\033[2J");
     termInterface_print(term);
-    printf("c\n");
     termInterface_free(term);
     return 0;
 }

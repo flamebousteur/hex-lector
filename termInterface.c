@@ -19,13 +19,17 @@ termInterface* termInterface_new(int width, int height, int colorLength) {
     termInterface* this = malloc(sizeof(termInterface));
     this->width = width;
     this->height = height;
-    // buffer is a 2D array of characters (256 characters, 256 colors | rgb (256, 256, 256))
+    this->pointerX = 0;
+    this->pointerY = 0;
+    // buffer is a 2D array of characters (256 characters)
     this->buffer = malloc(width * height);
+    this->texture = texture_new(width, height, colorLength);
     return this;
 }
 
 void termInterface_free(termInterface* this) {
     free(this->buffer);
+    texture_free(this->texture);
     free(this);
 }
 
@@ -35,7 +39,6 @@ void termInterface_clear(termInterface* this) {
 
 void termInterface_print(termInterface* this) {
     // print the buffer
-    printf("\n0\n");
     for (int i = 0; i < this->width * this->height; i++) {
         // line break
         if (i % this->width == 0) printf("\n");
